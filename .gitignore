@@ -1,0 +1,4 @@
+.vscode
+*.lock
+*target
+day01/day01
