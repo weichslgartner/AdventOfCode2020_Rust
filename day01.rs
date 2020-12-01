@@ -8,29 +8,29 @@ pub fn parse_numbers(input: &str) -> HashSet<u32> {
       .collect::<HashSet<u32>>()
   }
 
-fn part1(numbers: &HashSet<u32>, target: u32) -> u32{
+fn part1(numbers: &HashSet<u32>, target: u32) -> Option<u32> {
     for x in numbers.iter(){
         let need = target - x;
         if numbers.contains(&need){
-            return x * need;
-            
+            let result =  x * need;
+            return Some(result);
         }
     }
-    return 0;
+    None
 }
 
-fn part2(numbers: &HashSet<u32>, target: u32) -> u32{
+fn part2(numbers: &HashSet<u32>, target: u32) -> Option<u32>{
     for x in numbers.iter(){
         for y in numbers.iter(){
             if x+y < target{
                 let need = target - x-y;
                 if numbers.contains(&need){
-                    return x * need * y;
+                    return Some( x * need * y);
                 }
             }
         }
     }
-    return 0;
+    None
 }
 
 
@@ -40,6 +40,14 @@ fn main() {
     .expect("File {} not found.");
     let numbers = parse_numbers(&contents);
     let target = 2020;
-    print!("part1: {}\n", part1(&numbers,target));
-    print!("part2: {}\n", part2(&numbers,target));
+    print!("part1: ");
+    match part1(&numbers,target){
+        None => print!("no solution\n"),
+        Some(x) => print!(" {}\n", x),
+    };
+    print!("part2: ");
+    match part2(&numbers,target){
+        None => print!("no solution\n"),
+        Some(x) => print!(" {}\n", x),
+    };
 }
