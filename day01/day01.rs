@@ -19,6 +19,22 @@ fn part1(numbers: &HashSet<u32>, target: u32) -> Option<u32> {
     None
 }
 
+fn part1_func(numbers: &HashSet<u32>, target: u32) -> Option<u32> {
+    let res: Vec<_> = numbers
+        .iter()
+        .map(|x| target-x)
+        .filter(|x|  
+            numbers.contains(x)
+        )
+        .map(|x| (target-x)*x)
+        .collect();
+    if res.len() > 0{
+        return Some(res[0]);
+    }
+    None
+    
+}
+
 fn part2(numbers: &HashSet<u32>, target: u32) -> Option<u32> {
     for x in numbers.iter() {
         for y in numbers.iter() {
@@ -40,6 +56,11 @@ fn main() {
     let target = 2020;
     print!("part1: ");
     match part1(&numbers, target) {
+        None => print!("no solution\n"),
+        Some(x) => print!(" {}\n", x),
+    }
+    print!("part1 (functional): ");
+    match part1_func(&numbers, target) {
         None => print!("no solution\n"),
         Some(x) => print!(" {}\n", x),
     }
