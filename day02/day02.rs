@@ -38,7 +38,7 @@ fn main() {
     let file_name = "input_02.txt";
     let contents = fs::read_to_string(file_name).expect("File {} not found.");
     let lines = to_lines(&contents);
-    let rules: Vec<PwRule> = lines.iter().copied().map(|x| parse_rule(x)).collect();
+    let rules: Vec<PwRule> = lines.iter().map(|x| parse_rule(x)).collect();
     let part1 = rules.iter().filter(|&x| part1(x)).count();
     println!("Part 1: {}",part1);
     let part2 = rules.iter().filter(|&x| part2(x)).count();

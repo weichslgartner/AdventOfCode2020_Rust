@@ -1,5 +1,6 @@
 use std::collections::HashSet;
 use std::fs;
+use itertools::Itertools;
 
 fn parse_numbers(input: &str) -> HashSet<u32> {
     input
@@ -47,6 +48,23 @@ fn part2(numbers: &HashSet<u32>, target: u32) -> Option<u32> {
         }
     }
     None
+}
+
+fn part2_func(numbers: &HashSet<u32>, target: u32) -> Option<u32> {
+    let res: Vec<_> = numbers
+    .iter()
+    .copied()
+    .combinations(2)
+    .map(|x| target-x[0]-x[1])
+    .filter(|x|  
+        numbers.contains(x)
+    )
+    .map(|x| (target-x)*x)
+    .collect();
+if res.len() > 0{
+    return Some(res[0]);
+}
+None
 }
 
 fn main() {
