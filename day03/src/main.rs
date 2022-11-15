@@ -12,7 +12,13 @@ fn main() {
     let slopes = vec![Point { x: 3, y: 1 }];
     let slope_mult = count_trees(&trees, &limit, slopes);
     println!("Part 1: {slope_mult}");
-    let slopes = vec![Point { x: 1, y: 1 }, Point { x: 3, y: 1 }, Point { x: 5, y: 1 }, Point { x: 7, y: 1 }, Point { x: 1, y: 2 }];
+    let slopes = vec![
+        Point { x: 1, y: 1 },
+        Point { x: 3, y: 1 },
+        Point { x: 5, y: 1 },
+        Point { x: 7, y: 1 },
+        Point { x: 1, y: 2 },
+    ];
     let slope_mult = count_trees(&trees, &limit, slopes);
     println!("Part 2: {slope_mult}");
 }
@@ -53,9 +59,8 @@ fn parse_input(my_str: &str) -> (HashSet<Point>, Point) {
                 y += 1;
                 x = 0;
             }
-            _ => {}
+            _ => unreachable!(),
         }
     }
-    let limit = Point { x, y };
-    (trees, limit)
+    (trees, Point { x, y })
 }
