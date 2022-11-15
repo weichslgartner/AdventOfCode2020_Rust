@@ -1,4 +1,6 @@
 .vscode
+.idea
 *.lock
 *target
-day01/day01
+day*/day*
+day*/src/main
