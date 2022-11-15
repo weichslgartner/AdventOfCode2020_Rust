@@ -38,6 +38,23 @@ fn test_passport_p2(passport: &str) -> bool {
         .all(|(key, fun)| check_field(passport, key, fun))
 }
 
+fn check_field(passport: &str, key: &str, fun: CheckFn) -> bool {
+    if !passport.contains(key) {
+        return false;
+    }
+    let tokenz: Vec<(&str, &str)> = passport
+        .split(" ")
+        .filter(|x| x.contains(key))
+        .map(|x| x.rsplit_once(":").unwrap())
+        .collect();
+    fun(tokenz.first().unwrap().1)
+}
+
+fn check_year(year: &str, min: u32, max: u32) -> bool {
+    let year = year.parse::<u32>().unwrap();
+    year >= min && year <= max
+}
+
 fn check_hgt(token: &str) -> bool {
     if token.contains("in") {
         let height: u32 = token[0..token.len() - 2].parse().unwrap();
@@ -74,15 +91,6 @@ fn check_pid(token: &str) -> bool {
     token.chars().filter(|x| x.is_digit(10)).count() == ID_LEN
 }
 
-fn check_field(passport: &str, key: &str, fun: CheckFn) -> bool {
-    if !passport.contains(key) {
-        return false;
-    }
-    let tokenz: Vec<&str> = passport.split(" ").filter(|x| x.contains(key)).collect();
-    let token: Vec<&str> = tokenz[0].split(":").collect();
-    fun(token[1])
-}
-
 fn check_byr(token: &str) -> bool {
     check_year(token, 1920, 2002)
 }
@@ -93,9 +101,4 @@ fn check_iyr(token: &str) -> bool {
 
 fn check_eyr(token: &str) -> bool {
     check_year(token, 2020, 2030)
-}
-
-fn check_year(year: &str, min: u32, max: u32) -> bool {
-    let year = year.parse::<u32>().unwrap();
-    year >= min && year <= max
 }
