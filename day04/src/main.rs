@@ -24,7 +24,7 @@ fn main() {
 fn parse_input() -> Vec<String> {
     include_str!("../input_04.txt")
         .split("\n\n")
-        .map(|e| e.replace("\n", " "))
+        .map(|e| e.replace('\n', " "))
         .collect::<Vec<_>>()
 }
 
@@ -43,9 +43,9 @@ fn check_field(passport: &str, key: &str, fun: CheckFn) -> bool {
         return false;
     }
     let tokenz: Vec<(&str, &str)> = passport
-        .split(" ")
+        .split(' ')
         .filter(|x| x.contains(key))
-        .map(|x| x.rsplit_once(":").unwrap())
+        .map(|x| x.rsplit_once(':').unwrap())
         .collect();
     fun(tokenz.first().unwrap().1)
 }
@@ -58,18 +58,18 @@ fn check_year(year: &str, min: u32, max: u32) -> bool {
 fn check_hgt(token: &str) -> bool {
     if token.contains("in") {
         let height: u32 = token[0..token.len() - 2].parse().unwrap();
-        return height >= 59 && height <= 76;
+        return (59..=76).contains(&height);
     }
     if token.contains("cm") {
         let height: u32 = token[0..token.len() - 2].parse().unwrap();
-        return height >= 150 && height <= 193;
+        return (150..=193).contains(&height);
     }
     false
 }
 
 fn check_hcl(token: &str) -> bool {
     const HAIR_LEN: usize = 7;
-    if (token.len() != HAIR_LEN) || (token.chars().nth(0).unwrap() != '#') {
+    if (token.len() != HAIR_LEN) || !token.starts_with('#') {
         return false;
     }
     token.chars().filter(|x| x.is_ascii_hexdigit()).count() == HAIR_LEN - 1
@@ -88,7 +88,7 @@ fn check_pid(token: &str) -> bool {
     if token.len() != ID_LEN {
         return false;
     }
-    token.chars().filter(|x| x.is_digit(10)).count() == ID_LEN
+    token.chars().filter(|x| x.is_ascii_digit()).count() == ID_LEN
 }
 
 fn check_byr(token: &str) -> bool {
